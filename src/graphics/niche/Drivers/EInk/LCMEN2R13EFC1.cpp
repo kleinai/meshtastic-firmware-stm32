@@ -186,6 +186,8 @@ void LCMEN213EFC1::sendData(const uint8_t *data, uint32_t size)
     spi->transferBytes(data, NULL, size); // NULL for a "write only" transfer
 #elif defined(ARCH_NRF52)
     spi->transfer(data, NULL, size); // NULL for a "write only" transfer
+#elif defined(ARCH_STM32WL)
+    spi->transfer(data, NULL, size); // NULL for a "write only" transfer
 #else
 #error Not implemented yet? Feel free to add other platforms here.
 #endif
