@@ -271,7 +271,9 @@ int InkHUD::Events::beforeDeepSleep(void *unused)
 
     // InkHUD shutdown complete
     // Firmware shutdown continues for several seconds more; flash write still pending
+#if !defined(ARCH_STM32WL)
     playShutdownMelody();
+#endif
 
     return 0; // We agree: deep sleep now
 }
