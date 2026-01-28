@@ -48,8 +48,10 @@ the new node can build its node db)
 
 MeshService *service;
 
+#if !MESHTASTIC_EXCLUDE_MQTT
 #define MAX_MQTT_PROXY_MESSAGES 16
 static MemoryPool<meshtastic_MqttClientProxyMessage, MAX_MQTT_PROXY_MESSAGES> staticMqttClientProxyMessagePool;
+#endif
 
 #define MAX_QUEUE_STATUS 4
 static MemoryPool<meshtastic_QueueStatus, MAX_QUEUE_STATUS> staticQueueStatusPool;
@@ -57,7 +59,9 @@ static MemoryPool<meshtastic_QueueStatus, MAX_QUEUE_STATUS> staticQueueStatusPoo
 #define MAX_CLIENT_NOTIFICATIONS 4
 static MemoryPool<meshtastic_ClientNotification, MAX_CLIENT_NOTIFICATIONS> staticClientNotificationPool;
 
+#if !MESHTASTIC_EXCLUDE_MQTT
 Allocator<meshtastic_MqttClientProxyMessage> &mqttClientProxyMessagePool = staticMqttClientProxyMessagePool;
+#endif
 
 Allocator<meshtastic_ClientNotification> &clientNotificationPool = staticClientNotificationPool;
 
@@ -336,6 +340,7 @@ void MeshService::sendToPhone(meshtastic_MeshPacket *p)
     fromNum++;
 }
 
+#if !MESHTASTIC_EXCLUDE_MQTT
 void MeshService::sendMqttMessageToClientProxy(meshtastic_MqttClientProxyMessage *m)
 {
     LOG_DEBUG("Send mqtt message on topic '%s' to client for proxy", m->topic);
@@ -352,6 +357,7 @@ void MeshService::sendMqttMessageToClientProxy(meshtastic_MqttClientProxyMessage
     }
     fromNum++;
 }
+#endif
 
 void MeshService::sendRoutingErrorResponse(meshtastic_Routing_Error error, const meshtastic_MeshPacket *mp)
 {

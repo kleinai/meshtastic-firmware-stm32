@@ -41,6 +41,7 @@
 #endif
 #include <RTC.h>
 
+#if !MESHTASTIC_EXCLUDE_MQTT
 MQTT *mqtt;
 
 namespace
@@ -909,3 +910,4 @@ void MQTT::perhapsReportToMap()
     // Update the last report time
     last_report_to_map = millis();
 }
+#endif
