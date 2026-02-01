@@ -158,12 +158,13 @@ static struct lfs_config _InternalFSConfig = {.context = NULL,
                                               .prog_size = LFS_BLOCK_SIZE,
                                               .block_size = LFS_BLOCK_SIZE,
                                               .block_count = LFS_FLASH_TOTAL_SIZE / LFS_BLOCK_SIZE,
-                                              .lookahead = 128,
+                                              .block_cycles = 100,
+                                              .cache_size = LFS_BLOCK_SIZE,
+                                              .lookahead_size = 128,
 
                                               .read_buffer = NULL,
                                               .prog_buffer = NULL,
-                                              .lookahead_buffer = NULL,
-                                              .file_buffer = NULL};
+                                              .lookahead_buffer = NULL};
 
 LittleFS InternalFS;
 
