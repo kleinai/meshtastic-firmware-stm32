@@ -1,11 +1,15 @@
 #pragma once
 
-#include <cstdlib>
-#include <stdint.h>
+#include "concurrency/InterruptableDelay.h"
 
+#if !defined(POSIX_THREAD)
 #include "Thread.h"
 #include "ThreadController.h"
-#include "concurrency/InterruptableDelay.h"
+#else
+// TODO: Implement POSIX thread drivers
+#include "PosixThread.h"
+#include "PosixThreadController.h"
+#endif
 
 namespace concurrency
 {

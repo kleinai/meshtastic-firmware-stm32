@@ -31,7 +31,9 @@ OSThread::OSThread(const char *_name, uint32_t period, ThreadController *_contro
 {
     assertIsSetup();
 
+#ifdef USE_THREAD_NAMES
     ThreadName = _name;
+#endif
 
     if (controller) {
         bool added = controller->add(this);
