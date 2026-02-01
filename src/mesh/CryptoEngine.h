@@ -6,7 +6,6 @@
 #include "mesh-pb-constants.h"
 #include <Arduino.h>
 
-extern concurrency::Lock *cryptLock;
 
 struct CryptoKey {
     uint8_t bytes[32];

@@ -71,10 +71,6 @@ Router::Router() : concurrency::OSThread("Router"), fromRadioQueue(MAX_RX_FROMRA
     LOG_DEBUG("Size of MeshPacket %d", sizeof(MeshPacket)); */
 
     fromRadioQueue.setReader(this);
-
-    // init Lockguard for crypt operations
-    assert(!cryptLock);
-    cryptLock = new concurrency::Lock();
 }
 
 bool Router::shouldDecrementHopLimit(const meshtastic_MeshPacket *p)
@@ -412,8 +408,6 @@ void Router::sniffReceived(const meshtastic_MeshPacket *p, const meshtastic_Rout
 
 DecodeState perhapsDecode(meshtastic_MeshPacket *p)
 {
-    concurrency::LockGuard g(cryptLock);
-
     if (config.device.rebroadcast_mode == meshtastic_Config_DeviceConfig_RebroadcastMode_KNOWN_ONLY &&
         (nodeDB->getMeshNode(p->from) == NULL || !nodeDB->getMeshNode(p->from)->has_user)) {
         LOG_DEBUG("Node 0x%x not in nodeDB-> Rebroadcast mode KNOWN_ONLY will ignore packet", p->from);
@@ -548,8 +542,6 @@ DecodeState perhapsDecode(meshtastic_MeshPacket *p)
  */
 meshtastic_Routing_Error perhapsEncode(meshtastic_MeshPacket *p)
 {
-    concurrency::LockGuard g(cryptLock);
-
     int16_t hash;
 
     // If the packet is not yet encrypted, do so now

@@ -15,6 +15,8 @@
 #define CryptRNG RNG
 #endif
 
+static concurrency::Lock *cryptLock = new concurrency::Lock();
+
 /**
  * Create a public/private key pair with Curve25519.
  *
@@ -77,6 +79,8 @@ bool CryptoEngine::regeneratePublicKey(uint8_t *pubKey, uint8_t *privKey)
 bool CryptoEngine::encryptCurve25519(uint32_t toNode, uint32_t fromNode, meshtastic_UserLite_public_key_t remotePublic,
                                      uint64_t packetNum, size_t numBytes, const uint8_t *bytes, uint8_t *bytesOut)
 {
+    concurrency::LockGuard g(cryptLock);
+
     uint8_t *auth;
     long extraNonceTmp = random();
     auth = bytesOut + numBytes;
@@ -117,6 +121,8 @@ bool CryptoEngine::encryptCurve25519(uint32_t toNode, uint32_t fromNode, meshtas
 bool CryptoEngine::decryptCurve25519(uint32_t fromNode, meshtastic_UserLite_public_key_t remotePublic, uint64_t packetNum,
                                      size_t numBytes, const uint8_t *bytes, uint8_t *bytesOut)
 {
+    concurrency::LockGuard g(cryptLock);
+
     const uint8_t *auth = bytes + numBytes - 12; // set to last 8 bytes of text?
     uint32_t extraNonce;                         // pointer was not really used
     memcpy(&extraNonce, auth + 8,
@@ -197,7 +203,6 @@ bool CryptoEngine::setDHPublicKey(uint8_t *pubKey)
 }
 
 #endif
-concurrency::Lock *cryptLock;
 
 void CryptoEngine::setKey(const CryptoKey &k)
 {
