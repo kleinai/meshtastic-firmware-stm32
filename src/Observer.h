@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Arduino.h>
 #include <list>
 
 template <class T> class Observable;

@@ -4,7 +4,6 @@
 
 #include "MemoryPool.h"
 #include "mesh/mesh-pb-constants.h"
-#include <Arduino.h>
 
 typedef uint32_t NodeNum;
 typedef uint32_t PacketId; // A packet sequence number

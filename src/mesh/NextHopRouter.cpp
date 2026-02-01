@@ -320,7 +320,7 @@ int32_t NextHopRouter::doRetransmissions()
             // Update our desired sleep delay
             int32_t t = p.nextTxMsec - now;
 
-            d = min(t, d);
+            d = std::min(t, d);
         }
     }
 

@@ -3,7 +3,6 @@
 #include "assert.h"
 #include "configuration.h"
 #include "meshUtils.h"
-#include <Arduino.h>
 
 namespace meshtastic
 {

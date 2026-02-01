@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Arduino.h>
-
 #include "mesh/generated/meshtastic/mesh.pb.h" // For CriticalErrorCode
 
 /// A macro that include filename and line

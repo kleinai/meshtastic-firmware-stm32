@@ -24,7 +24,36 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#ifndef EXCLUDE_ARDUINO
 #include <Arduino.h>
+#else
+#include <cstdint>
+typedef uint8_t byte;
+
+#include <random>
+
+long random(long lower, long upper) {
+   static std::random_device rd;
+   static std::mt19937 gen(rd());
+   static std::uniform_int_distribution<unsigned long> distrib(0, 0xffffffffUL);
+
+   if (upper < lower) {
+      return lower;
+   }
+
+   if (lower == 0) {
+      return (long) (distrib(gen) % upper);
+   } else {
+      long diff = upper - lower;
+      return (long) ((distrib(gen) % diff) + lower);
+   }
+}
+
+long random(long upper) {
+   return random(0, upper);
+}
+
+#endif
 
 #if __has_include("Melopero_RV3028.h")
 #include "Melopero_RV3028.h"
@@ -34,7 +63,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 /* Offer chance for variant-specific defines */
+#ifndef EXCLUDE_ARDUINO
 #include "variant.h"
+#endif
 
 // -----------------------------------------------------------------------------
 // Display feature overrides
@@ -328,7 +359,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Step #2: follow with defines common to the architecture;
    also enable HAS_ option not specifically disabled by variant.h */
+#ifndef EXCLUDE_ARDUINO
 #include "architecture.h"
+#endif
 
 #ifndef DEFAULT_REBOOT_SECONDS
 #define DEFAULT_REBOOT_SECONDS 7

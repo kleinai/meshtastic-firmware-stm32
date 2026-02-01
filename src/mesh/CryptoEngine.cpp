@@ -1,6 +1,4 @@
 #include "CryptoEngine.h"
-// #include "NodeDB.h"
-#include "architecture.h"
 
 #if !(MESHTASTIC_EXCLUDE_PKI)
 #include "NodeDB.h"
@@ -11,7 +9,8 @@
 #include <RNG.h>
 #include <SHA256.h>
 #if !(MESHTASTIC_EXCLUDE_PKI_KEYGEN)
-#if !defined(ARCH_STM32WL)
+#if !defined(ARCH_STM32WL) && !defined(EXCLUDE_ARDUINO)
+#include "architecture.h"
 #define CryptRNG RNG
 #endif
 

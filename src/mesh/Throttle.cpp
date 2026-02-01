@@ -1,5 +1,15 @@
 #include "Throttle.h"
+
+#ifndef EXCLUDE_ARDUINO
 #include <Arduino.h>
+#else
+#include <chrono>
+static std::chrono::time_point<std::chrono::steady_clock> START_TIME = std::chrono::steady_clock::now();
+
+static unsigned long millis() {
+    return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - START_TIME).count();
+}
+#endif
 
 /// @brief Execute a function throttled to a minimum interval
 /// @param lastExecutionMs Pointer to the last execution time in milliseconds

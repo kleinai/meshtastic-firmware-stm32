@@ -83,7 +83,7 @@ class NextHopRouter : public FloodingRouter
 
         // Also after calling runOnce there might be new packets to retransmit
         auto d = doRetransmissions();
-        return min(d, r);
+        return std::min(d, r);
     }
 
     // The number of retransmissions intermediate nodes will do (actually 1 less than this)

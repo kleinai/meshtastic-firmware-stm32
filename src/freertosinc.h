@@ -29,7 +29,11 @@
 
 // Include placeholder fake FreeRTOS defs
 
+#ifndef EXCLUDE_ARDUINO
 #include <Arduino.h>
+#else
+#include <cstdint>
+#endif
 
 typedef uint32_t TickType_t;
 typedef uint32_t BaseType_t;

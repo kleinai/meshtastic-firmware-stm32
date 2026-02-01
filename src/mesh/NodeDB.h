@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Observer.h"
-#include <Arduino.h>
 #include <algorithm>
 #include <assert.h>
 #include <pb_encode.h>

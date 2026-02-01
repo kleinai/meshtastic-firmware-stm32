@@ -1,19 +1,128 @@
 #pragma once
 
+#include <iostream>
+
 #include "../freertosinc.h"
 #include "mesh/generated/meshtastic/mesh.pb.h"
-#include <Print.h>
 #include <stdarg.h>
 #include <string>
+
+
+#if !defined(POSIX_PRINT)
+#include <Print.h>
+#define PRINT_DRIVER Print
+#else
+
+#define DEC 10
+#define HEX 16
+#define OCT 8
+#define BIN 2
+
+#include <iostream>
+#include <cstdio>
+
+class PosixPrint {
+private:
+  int write_error;
+
+protected:
+  void setWriteError(int err = 1) {
+    write_error = err;
+  }
+
+public:
+  PosixPrint() : write_error(0) {}
+
+  int getWriteError() { return write_error; }
+
+  void clearWriteError() { write_error = 0; }
+
+  size_t write(uint8_t c) { return printf("%c", c); }
+
+  size_t write(const char *str) { return printf("%s", str); }
+
+  size_t write(const uint8_t *buffer, size_t size) {
+    std::string str = std::string((const char*) buffer, size);
+    if (write_error == 1)
+      std::cerr << str;
+    else
+      std::cout << str;
+    return str.length();
+  }
+
+  size_t write(const char *buffer, size_t size) {
+    return write((const uint8_t *)buffer, size);
+  }
+
+  virtual int availableForWrite() {
+    return 0;
+  }
+
+  // size_t print(const __FlashStringHelper *);
+  // size_t print(const String &);
+  size_t print(const char str[]) { return printf("%s", str); }
+  size_t print(char c) { return printf("%c", c); }
+  size_t print(unsigned char, int = DEC);
+  size_t print(int, int = DEC);
+  size_t print(unsigned int, int = DEC);
+  size_t print(long, int = DEC);
+  size_t print(unsigned long, int = DEC);
+  size_t print(long long, int = DEC);
+  size_t print(unsigned long long, int = DEC);
+  size_t print(float, int = 2);
+  size_t print(double, int = 2);
+  // size_t print(const Printable &);
+
+  // size_t println(const __FlashStringHelper *);
+  // size_t println(const String &s);
+  size_t println(const char[]);
+  size_t println(char);
+  size_t println(unsigned char, int = DEC);
+  size_t println(int, int = DEC);
+  size_t println(unsigned int, int = DEC);
+  size_t println(long, int = DEC);
+  size_t println(unsigned long, int = DEC);
+  size_t println(long long, int = DEC);
+  size_t println(unsigned long long, int = DEC);
+  size_t println(float, int = 2);
+  size_t println(double, int = 2);
+  // size_t println(const Printable &);
+  size_t println(void);
+
+  int printf(const char *format, ...) {
+    va_list ap;
+    va_start(ap, format);
+    int len = vprintf(format, ap);
+    va_end(ap);
+    return len;
+  }
+
+  int vprintf(const char *format, va_list ap) {
+    char buf[1024];
+    int len = std::vsnprintf(buf, 1023, format, ap);
+    if (write_error == 1)
+      std::cerr << buf;
+    else
+      std::cout << buf;
+    return len;
+  }
+
+  virtual void flush() {
+
+  }
+};
+
+#define PRINT_DRIVER PosixPrint
+#endif
 
 /**
  * A Printable that can be switched to squirt its bytes to a different sink.
  * This class is mostly useful to allow debug printing to be redirected away from Serial
  * to some other transport if we switch Serial usage (on the fly) to some other purpose.
  */
-class RedirectablePrint : public Print
+class RedirectablePrint : public PRINT_DRIVER
 {
-    Print *dest;
+    PRINT_DRIVER *dest;
 
 #ifdef HAS_FREE_RTOS
     SemaphoreHandle_t inDebugPrint = nullptr;
@@ -22,13 +131,13 @@ class RedirectablePrint : public Print
     volatile bool inDebugPrint = false;
 #endif
   public:
-    explicit RedirectablePrint(Print *_dest) : dest(_dest) {}
+    explicit RedirectablePrint(PRINT_DRIVER *_dest) : dest(_dest) {}
 
     /**
      * Set a new destination
      */
     void rpInit();
-    void setDestination(Print *dest);
+    void setDestination(PRINT_DRIVER *dest);
 
     virtual size_t write(uint8_t c);
 

@@ -4,7 +4,6 @@
 #include "concurrency/LockGuard.h"
 #include "configuration.h"
 #include "mesh-pb-constants.h"
-#include <Arduino.h>
 
 
 struct CryptoKey {

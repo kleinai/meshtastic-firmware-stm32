@@ -2,7 +2,6 @@
 #include "NodeDB.h"
 #include "Status.h"
 #include "configuration.h"
-#include <Arduino.h>
 
 namespace meshtastic
 {

@@ -2,7 +2,7 @@
 #ifndef _MT_MEMGET_H
 #define _MT_MEMGET_H
 
-#include <Arduino.h>
+#include "configuration.h"
 
 class MemGet
 {

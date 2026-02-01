@@ -10,8 +10,6 @@
 #include "MeshRadio.h"
 #include "MeshService.h"
 #include "NodeDB.h"
-#include "PacketHistory.h"
-#include "PowerFSM.h"
 #include "RTC.h"
 #include "RadioInterface.h"
 #include "Router.h"
@@ -19,7 +17,6 @@
 #include "SafeFile.h"
 #include "TypeConversions.h"
 #include "error.h"
-#include "main.h"
 #include "mesh-pb-constants.h"
 #include "meshUtils.h"
 #include "modules/NeighborInfoModule.h"
@@ -29,6 +26,9 @@
 #include <pb_encode.h>
 #include <power/PowerHAL.h>
 #include <vector>
+#include "memGet.h"
+
+extern ScanI2C::DeviceAddress screen_found;
 
 #ifdef ARCH_ESP32
 #if HAS_WIFI
@@ -543,6 +543,10 @@ void NodeDB::installDefaultNodeDatabase()
     numMeshNodes = 0;
     meshNodes = &nodeDatabase.nodes;
 }
+
+#ifndef HAS_BLUETOOTH
+#define HAS_BLUETOOTH 0
+#endif
 
 void NodeDB::installDefaultConfig(bool preserveKey = false)
 {

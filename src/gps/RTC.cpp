@@ -1,7 +1,6 @@
 #include "RTC.h"
 #include "configuration.h"
 #include "detect/ScanI2C.h"
-#include "main.h"
 #include <Throttle.h>
 #include <sys/time.h>
 #include <time.h>

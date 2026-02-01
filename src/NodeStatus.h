@@ -1,7 +1,6 @@
 #pragma once
 #include "Status.h"
 #include "configuration.h"
-#include <Arduino.h>
 
 namespace meshtastic
 {

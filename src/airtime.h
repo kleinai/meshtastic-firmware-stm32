@@ -3,7 +3,6 @@
 #include "MeshRadio.h"
 #include "concurrency/OSThread.h"
 #include "configuration.h"
-#include <Arduino.h>
 #include <functional>
 
 /*

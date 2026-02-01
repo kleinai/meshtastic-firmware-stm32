@@ -3,7 +3,6 @@
 #include "FSCommon.h"
 #include "SPILock.h"
 #include "mesh-pb-constants.h"
-#include <Arduino.h>
 #include <pb_decode.h>
 #include <pb_encode.h>
 

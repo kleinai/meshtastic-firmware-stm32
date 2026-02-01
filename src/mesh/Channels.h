@@ -3,7 +3,6 @@
 #include "CryptoEngine.h"
 #include "NodeDB.h"
 #include "mesh-pb-constants.h"
-#include <Arduino.h>
 
 /** A channel number (index into the channel table)
  */

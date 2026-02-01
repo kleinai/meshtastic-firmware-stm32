@@ -7,7 +7,6 @@
 #include "RTC.h"
 
 #include "configuration.h"
-#include "main.h"
 #include "mesh-pb-constants.h"
 #include "meshUtils.h"
 #include "modules/RoutingModule.h"
@@ -21,6 +20,8 @@
 #if ENABLE_JSON_LOGGING || ARCH_PORTDUINO
 #include "serialization/MeshPacketSerializer.h"
 #endif
+
+extern bool runASAP;
 
 #define MAX_RX_FROMRADIO                                                                                                         \
     4 // max number of packets destined to our queue, we dispatch packets quickly so it doesn't need to be big

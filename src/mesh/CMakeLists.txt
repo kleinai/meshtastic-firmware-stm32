@@ -65,10 +65,11 @@ target_include_directories(mesh SYSTEM PRIVATE ./)
 target_include_directories(mesh SYSTEM PRIVATE ${NANOPB_BINARY_DIR})
 
 add_compile_definitions(mesh
+        EXCLUDE_ARDUINO=1
         APP_VERSION=1.0.0
         HW_VENDOR=meshtastic_HardwareModel_UNSET
-        THREAD_DRIVER=PosixThread
-        PRINT_DRIVER=PosixPrint
+        POSIX_THREAD=1
+        POSIX_PRINT=1
         MESHTASTIC_EXCLUDE_TRACEROUTE
         MESHTASTIC_EXCLUDE_GPS
         MESHTASTIC_INCLUDE_NICHE_GRAPHICS
